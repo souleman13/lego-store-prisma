@@ -1,8 +1,19 @@
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:300, 400';
+main {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Open Sans', sans-serif;
-  background: rgba(0, 0, 0, 0.05);
+form {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
+}
+
+/* css className */
+.force-row{
+  display: flex;
+  flex-flow: row nowrap;
 }

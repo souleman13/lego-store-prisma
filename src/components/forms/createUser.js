@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-
+import gql from 'graphql-tag'
+import {graphql} from 'react-apollo'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
-class UserForm extends Component {
+class CreateUserForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -13,11 +14,17 @@ class UserForm extends Component {
         }
     }
 
-    submitForm = () => {
-        console.log(this.state)
-        alert(`Thanks for creating an account!`)
+    submitForm = async () => {
+        await this.props.mutate({
+            variables: {
+                name: this.state.name,
+                email: this.state.email,
+                pw: this.state.pw
+            }
+        })
+        await alert(`Thanks for creating an account!`)
         //uncomment the next line to redirect to login post submit
-        // window.location.replace('/login')
+        window.location.replace('/login')
     }
 
     render() {
@@ -35,4 +42,16 @@ class UserForm extends Component {
         )
     }
 }
-export default UserForm
+const CREATE_USER_MUTATION = gql`
+    mutation($name: String!, $email: String!, $pw: String!){
+        createUser(
+            name: $name,
+            email: $email,
+            pw: $pw
+        ){
+            id
+        }
+    }
+`
+
+export default graphql(CREATE_USER_MUTATION)(CreateUserForm)

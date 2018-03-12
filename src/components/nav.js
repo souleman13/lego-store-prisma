@@ -1,35 +1,53 @@
 import React, { Component } from 'react'
+import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 import AppBar from 'material-ui/AppBar'
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton'
 
 import {ModalButton} from './buttons'
 import LoginForm from './forms/login'
-import UserForm from './forms/user_create_update'
+import CreateUserForm from './forms/createUser'
+import UpdateUserForm from './forms/updateUser'
+import {isAuthenticated} from '../config/auth'
 
-export default class extends Component {
+import {user_id} from '../config/apollo'
+
+class Nav extends Component {
     constructor(props) {
         super(props);
-        this.state = { open: false }
+        this.state = { open: false, NumCartItems: 0 }
     }
+    componentWillReceiveProps(nextProps){
+        if(!nextProps.data.loading){
+            this.setState({NumCartItems: nextProps.data.user.cart.products.length})
+        }
+    }
+
     toggleDrawer = () => { this.setState({ open: !this.state.open }) }
 
     redirect = (route) => { window.location.replace(route) }
 
     render() {
-        return (
+        return !this.props.data.loading ?
             <section>
                 <div>
-                <AppBar title="React-Forms"
+                <AppBar title="Lego Store Prisma"
                     onLeftIconButtonClick={this.toggleDrawer}
-                    iconElementRight={
-                    <div>
+                    iconElementRight={ isAuthenticated()?
+                    <div className='force-row' >
                         <ModalButton label={'Login'} display={<LoginForm/>} />
-                        <ModalButton label={'Sign-up'} display={<UserForm id={'new'}/>} />
-                        <ModalButton label={'Edit User'} display={<UserForm id={'new'}/>} />
+                        <ModalButton label={'Sign-up'} display={<CreateUserForm />} />
                     </div>
-                        }
+                    :
+                    <div className='force-row' >
+                        <ModalButton label={'Edit User'} display={<UpdateUserForm id={user_id}/>} />        
+                        <div>{this.state.NumCartItems}</div>
+                        <IconButton iconClassName="material-icons" href='/cart'>shopping_cart</IconButton>
+                    </div>
+                    }
                 />
                 <Drawer docked={false} open={this.state.open} onRequestChange={this.toggleDrawer}>
                     <MenuItem onClick={() => this.redirect('/')}>Product List</MenuItem>
@@ -37,7 +55,20 @@ export default class extends Component {
                 </Drawer>
                 </div>
                 
-            </section>
-        )
+            </section> : <AppBar title='Lego Store Prisma'/>
+        
     }
 }
+const USER_CART_QUERY = gql`
+    query($id: ID!){
+        user(id:$id){
+            cart{
+                products{
+                    id
+                }
+            }
+        }
+    }
+`
+
+export default graphql(USER_CART_QUERY,{options:(props) => ({variables:{id: user_id}})})(Nav)

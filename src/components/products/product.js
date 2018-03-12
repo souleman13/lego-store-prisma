@@ -1,21 +1,37 @@
 import React, {Component} from 'react'
 
 import Paper from 'material-ui/Paper'
-import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from 'material-ui/IconButton'
 
 import {ModalButton} from '../buttons'
-import ProductForm from '../forms/product_create_update'
+import UpdateProductForm from '../forms/updateProduct'
 
-export default class extends Component {
+class Product extends Component {
     render(){
+        const {name, imgURL, desc, price} = this.props.product
         return(
-            <Paper>
-                <div>product info</div>
-
-                <RaisedButton label='+Cart' />
+            <Paper className='force-row'>
+                <ul>{name}
+                    <li>${price}</li>
+                    <li>{imgURL}</li>
+                    <li>{desc}</li>
+                </ul>
                 
-                <ModalButton label='edit' display={<ProductForm />} />
+
+                {this.props.cartView?
+                <div>
+                    <IconButton iconClassName="material-icons">remove_shopping_cart</IconButton>
+                </div>
+                :
+                <div>
+                    <ModalButton label='edit' display={<UpdateProductForm product={this.props.product} />} />
+                    <IconButton iconClassName="material-icons">add_shopping_cart</IconButton>
+                </div>
+                }
+
+                
             </Paper>
         )
     }
-}
+} 
+export default Product
