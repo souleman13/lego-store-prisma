@@ -38,7 +38,7 @@ class ProductForm extends Component {
                 <TextField required floatingLabelText={`Name`} onChange={e => this.setState({ name: e.target.value })} />
                 <TextField required floatingLabelText={`Image URL`} onChange={e => this.setState({ imgURL: e.target.value })} />
                 <TextField required floatingLabelText={`Description`} onChange={e => this.setState({ desc: e.target.value })} />
-                <TextField required floatingLabelText={`Price`} onChange={e => this.setState({ price: parseInt(10, e.target.value) })} />
+                <TextField required floatingLabelText={`Price`} onChange={e => this.setState({ price: e.target.value })} />
                 <RaisedButton label='Submit' type='submit' />
             </form>
         )

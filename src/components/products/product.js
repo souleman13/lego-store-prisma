@@ -10,14 +10,14 @@ class Product extends Component {
     render(){
         const {name, imgURL, desc, price} = this.props.product
         return(
-            <Paper className='force-row'>
-                <ul>{name}
-                    <li>${price}</li>
-                    <li>{imgURL}</li>
-                    <li>{desc}</li>
-                </ul>
+            <Paper className='product'>
+                <img src={imgURL} alt={'Not Available'}/>
+                <section>
+                    <h2>{name}</h2>
+                    <div>{price}</div>
+                    <p>{desc}</p>
+                </section>
                 
-
                 {this.props.cartView?
                 <div>
                     <IconButton iconClassName="material-icons">remove_shopping_cart</IconButton>

@@ -2,6 +2,8 @@ main {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  width: 99vw;
+  margin-top: 10px;
 }
 
 form {
@@ -12,7 +14,23 @@ form {
   margin: 10px;
 }
 
+img {
+  height: 200px;
+  width: 250px;
+}
 /* css className */
+.list{
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+}
+.product{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  padding: 20px;
+  margin: 10px;
+}
 .force-row{
   display: flex;
   flex-flow: row nowrap;
