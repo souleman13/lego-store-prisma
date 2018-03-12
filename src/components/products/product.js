@@ -1,31 +1,42 @@
 import React, {Component} from 'react'
-
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
 import Paper from 'material-ui/Paper'
 import IconButton from 'material-ui/IconButton'
 
 import {ModalButton} from '../buttons'
 import UpdateProductForm from '../forms/updateProduct'
 
+import {user_id} from '../../config/apollo'
+
 class Product extends Component {
     render(){
-        const {name, imgURL, desc, price} = this.props.product
+        const {addToCart, removeFromCart, product} = this.props
+        const AddToCart = async () => {
+            await addToCart({variables:{product_id:product.id}}).then(r => console.log(r))
+            alert('product added to cart')
+        }
+        const RemoveFromCart = async () => {
+            await removeFromCart({variables:{product_id:product.id}}).then(r => console.log(r))
+            alert('product removed from cart')
+        }
         return(
             <Paper className='product'>
-                <img src={imgURL} alt={'Not Available'}/>
+                <img src={product.imgURL} alt={'Not Available'}/>
                 <section>
-                    <h2>{name}</h2>
-                    <div>{price}</div>
-                    <p>{desc}</p>
+                    <h2>{product.name}</h2>
+                    <div>{product.price}</div>
+                    <p>{product.desc}</p>
                 </section>
                 
                 {this.props.cartView?
                 <div>
-                    <IconButton iconClassName="material-icons">remove_shopping_cart</IconButton>
+                    <IconButton iconClassName="material-icons"  onClick={() => RemoveFromCart()}>remove_shopping_cart</IconButton>
                 </div>
                 :
                 <div>
-                    <ModalButton label='edit' display={<UpdateProductForm product={this.props.product} />} />
-                    <IconButton iconClassName="material-icons">add_shopping_cart</IconButton>
+                    <ModalButton label='edit' display={<UpdateProductForm product={product} />} />
+                    <IconButton iconClassName="material-icons" onClick={() => AddToCart()} >add_shopping_cart</IconButton>
                 </div>
                 }
 
@@ -34,4 +45,39 @@ class Product extends Component {
         )
     }
 } 
-export default Product
+const ADD_TO_CART = gql`
+mutation($user_id:ID!, $product_id:ID!){
+    addProductToCart(
+      user_id: $user_id
+      product_id: $product_id
+    ){
+      cart{
+        id
+        products{
+          id
+          name
+        }
+      }
+    }
+  }
+`
+const REMOVE_FROM_CART = gql`
+mutation($user_id:ID!, $product_id:ID!){
+    removeProductFromCart(
+      user_id: $user_id
+      product_id: $product_id
+    ){
+      cart{
+        id
+        products{
+          id
+          name
+        }
+      }
+    }
+  }`
+
+export default compose(
+    graphql(ADD_TO_CART,{name:'addToCart', options: () => ({variables:{user_id}})}),
+    graphql(REMOVE_FROM_CART,{name:'removeFromCart', options: () => ({variables:{user_id}})})
+)(Product)

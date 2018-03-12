@@ -10,7 +10,7 @@ export default class extends Component {
         return(
             <main>
 
-                <ModalButton  label={'+Product'} display={<CreateProductForm id={'new'} />} />
+                <ModalButton  label={'Add Product'} display={<CreateProductForm />} />
 
                 <AllProductsList />
             </main>
