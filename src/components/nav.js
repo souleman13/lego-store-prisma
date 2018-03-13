@@ -13,7 +13,7 @@ import CreateUserForm from './forms/createUser'
 import UpdateUserForm from './forms/updateUser'
 import {isAuthenticated} from '../config/auth'
 
-import {user_id} from '../config/apollo'
+import {user_id} from '../config/auth'
 
 class Nav extends Component {
     constructor(props) {
@@ -21,8 +21,8 @@ class Nav extends Component {
         this.state = { open: false, NumCartItems: 0 }
     }
     componentWillReceiveProps(nextProps){
-        if(!nextProps.data.loading){
-            this.setState({NumCartItems: nextProps.data.user.cart.products.length})
+        if(!nextProps.data.loading && nextProps.data.user){
+            if(nextProps.data.user.cart){this.setState({NumCartItems: nextProps.data.user.cart.products.length})}
         }
     }
 
@@ -37,21 +37,21 @@ class Nav extends Component {
                 <AppBar title="Lego Store Prisma"
                     onLeftIconButtonClick={this.toggleDrawer}
                     iconElementRight={ isAuthenticated()?
-                    <div className='force-row' >
-                        <ModalButton label={'Login'} display={<LoginForm/>} />
-                        <ModalButton label={'Sign-up'} display={<CreateUserForm />} />
-                    </div>
-                    :
-                    <div className='force-row' >
+                    <div className='appbar-buttons' >
                         <ModalButton label={'Edit User'} display={<UpdateUserForm id={user_id}/>} />        
                         <div>{this.state.NumCartItems}</div>
                         <IconButton iconClassName="material-icons" href='/cart'>shopping_cart</IconButton>
+                    </div> 
+                    : 
+                    <div className='appbar-buttons' >
+                        <ModalButton className='button' label={'Login'} display={<LoginForm/>} />
+                        <ModalButton label={'Sign-up'} display={<CreateUserForm />} />
                     </div>
                     }
                 />
                 <Drawer docked={false} open={this.state.open} onRequestChange={this.toggleDrawer}>
                     <MenuItem onClick={() => this.redirect('/')}>Product List</MenuItem>
-                    <MenuItem onClick={() => this.redirect('/cart')}>Cart</MenuItem>
+                    {isAuthenticated()?<MenuItem onClick={() => this.redirect('/cart')}>Cart</MenuItem>:null}                    
                 </Drawer>
                 </div>
                 

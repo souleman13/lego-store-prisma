@@ -7,7 +7,7 @@ import IconButton from 'material-ui/IconButton'
 import {ModalButton} from '../buttons'
 import UpdateProductForm from '../forms/updateProduct'
 
-import {user_id} from '../../config/apollo'
+import {user_id} from '../../config/auth'
 
 class Product extends Component {
     render(){

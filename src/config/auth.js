@@ -1,26 +1,37 @@
 import gql from 'graphql-tag'
 import {apollo} from './apollo'
 import * as Storage from './localstorage'
+import jwt from 'jsonwebtoken'
 
-export const login = (username,pw) => {
-    alert('no login mutation sotored in graphql')
-    apollo.mutate({
-        mutation: gql`mutation(
+export let user_id = ''
 
-        ){
+if(Storage.itemByKey('token')){
+    const decode = jwt.verify(Storage.itemByKey('token'), 'JWT_SECRET')
+    user_id = decode.userId
+}
+
+export const login = async (email,pw) => {
+    await apollo.mutate({
+        mutation: gql`
+        mutation($email: String!, $pw: String!){
             login(
-
-        ){
-            id
-        }`,
+                email: $email,
+                pw: $pw
+            ){
+                token
+                user{
+                    id
+                }
+            }
+        }
+        `,
         variables: {
-            username,
+            email,
             pw
         }})
         .then((r) => {
-            Storage.save('token', r.data.signinUser.token)
-            alert('login successful')
-            // window.location.replace('/')
+            Storage.save('token', r.data.login.token)
+            window.location.replace('/')
         })
         .catch(err => console.log(err))
 }

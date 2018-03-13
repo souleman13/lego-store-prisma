@@ -35,6 +35,7 @@ class ProductForm extends Component {
                 e.preventDefault() //this stops the page from redireting when you hit submit
                 this.submitForm()
             }}>
+                <a target='_blank' rel="noopener noreferrer" href="https://github.com/souleman13/lego-store-react-redux/blob/master/src/figures.js">Json of Products</a>
                 <TextField required floatingLabelText={`Name`} onChange={e => this.setState({ name: e.target.value })} />
                 <TextField required floatingLabelText={`Image URL`} onChange={e => this.setState({ imgURL: e.target.value })} />
                 <TextField required floatingLabelText={`Description`} onChange={e => this.setState({ desc: e.target.value })} />

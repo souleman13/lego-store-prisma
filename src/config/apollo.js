@@ -21,5 +21,3 @@ export const apollo = new ApolloClient({
   link: authLink.concat(endpoint),
   cache: new InMemoryCache()
 })
-
-export const user_id = 'cjenmlpp3cwbf0197j5rtho8c'

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
+import bcrypt from 'bcryptjs'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
@@ -35,7 +36,7 @@ class CreateUserForm extends Component {
             }}>
                 <TextField required floatingLabelText={`Name`} onChange={e => this.setState({ name: e.target.value })} />
                 <TextField required floatingLabelText={`Email`} onChange={e => this.setState({ email: e.target.value })} />
-                <TextField required floatingLabelText={`Password`} onChange={e => this.setState({ pw: e.target.value })} />
+                <TextField required floatingLabelText={`Password`} onChange={e => this.setState({ pw: bcrypt.hash(e.target.value, 10)})} />
                 
                 <RaisedButton label='Submit' type='submit' />
             </form>

@@ -31,7 +31,10 @@ img {
   padding: 20px;
   margin: 10px;
 }
-.force-row{
+.appbar-buttons{
+  width: 250px;
   display: flex;
   flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
 }
