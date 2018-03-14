@@ -17,6 +17,7 @@ class Cart extends Component {
     }
     async componenetWillReveiveProps(nextProps){
         if(!nextProps.data.loading && nextProps.data.user.cart.products.length > 0){
+            console.log(nextProps)
             const subtotal = await nextProps.data.user.cart.products.reduce(product => product.price)
             const tax = await subtotal*.08
             const total =  await tax + subtotal
@@ -35,7 +36,7 @@ class Cart extends Component {
             {user.cart.products === 0? <div>no products in cart!</div>:
             <div>
             <section>
-                {user.cart.products.map(product => <Product cartView={true} product={product} />)}
+                {user.cart.products.map(product => <Product cartView={true} product={product} key={product.id} />)}
             </section>
             <section>
                 <div>subtotal:{subtotal}</div>
@@ -55,6 +56,10 @@ const USER_CART_QUERY = gql`
             cart{
                 products{
                     id
+                    name
+                    imgURL
+                    desc
+                    price
                 }
             }
         }
