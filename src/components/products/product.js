@@ -11,7 +11,11 @@ import {user_id} from '../../config/auth'
 
 class Product extends Component {
     render(){
+        //props deconstruction
         const {addToCart, removeFromCart, product} = this.props
+        console.log(product)
+
+        //cart functions
         const AddToCart = async () => {
             await addToCart({variables:{product_id:product.id}}).then(r => console.log(r))
             alert('product added to cart')
@@ -32,6 +36,7 @@ class Product extends Component {
                 {this.props.cartView?
                 <div>
                     <IconButton iconClassName="material-icons"  onClick={() => RemoveFromCart()}>remove_shopping_cart</IconButton>
+                    <div>Quantity: {product.quantity}</div>
                 </div>
                 :
                 <div>

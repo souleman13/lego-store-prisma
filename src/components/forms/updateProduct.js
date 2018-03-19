@@ -39,7 +39,7 @@ class UpdateProductForm extends Component {
             }}>
                 <TextField required floatingLabelText={`Name`} value={this.state.name} onChange={e => this.setState({ name: e.target.value })} />
                 <TextField required floatingLabelText={`Image URL`} value={this.state.imgURL} onChange={e => this.setState({ imgURL: e.target.value })} />
-                <TextField required floatingLabelText={`Description`} value={this.state.desc} onChange={e => this.setState({ desc: e.target.value })} />
+                <TextField required multiLine={true} floatingLabelText={`Description`} value={this.state.desc} onChange={e => this.setState({ desc: e.target.value })} />
                 <TextField required floatingLabelText={`Price`} type='number' value={this.state.price} onChange={e => this.setState({ price: e.target.value })} />
                 <RaisedButton label='Submit' type='submit' />
             </form> : <div>loading...</div>

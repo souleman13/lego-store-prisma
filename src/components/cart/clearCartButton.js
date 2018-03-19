@@ -1,11 +1,35 @@
 import React, {Component} from 'react'
+import gql from 'graphql-tag'
+import {graphql} from 'react-apollo'
 import RaisedButton from 'material-ui/RaisedButton'
+import {user_id} from '../../config/auth'
 
 class CheckoutButton extends Component {
     render(){
         return(
-            <RaisedButton label='Clear Cart' />
+            <RaisedButton 
+                label='Clear Cart' 
+                onClick={() => {
+                    this.props.mutate()
+                    window.location.replace('/')
+                }} />
         )
     }
 }
-export default CheckoutButton
+
+const CLEAR_CART_MUTATION = gql`
+mutation($user_id:ID!){
+    clearCart(
+      user_id: $user_id
+    ){
+      cart {
+        id
+        products {
+          id
+        }
+      }
+    }
+  }
+`
+
+export default graphql(CLEAR_CART_MUTATION,{options:(props)=>({variables:{user_id}})})(CheckoutButton)

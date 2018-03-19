@@ -11,7 +11,7 @@ import {ModalButton} from './buttons'
 import LoginForm from './forms/login'
 import CreateUserForm from './forms/createUser'
 import UpdateUserForm from './forms/updateUser'
-import {isAuthenticated} from '../config/auth'
+import {isAuthenticated, logout} from '../config/auth'
 
 import {user_id} from '../config/auth'
 
@@ -36,7 +36,7 @@ class Nav extends Component {
                 <div>
                 <AppBar title="Lego Store Prisma"
                     onLeftIconButtonClick={this.toggleDrawer}
-                    iconElementRight={ isAuthenticated()?
+                    iconElementRight={ isAuthenticated() ?
                     <div className='appbar-buttons' >
                         <ModalButton label={'Edit User'} display={<UpdateUserForm id={user_id}/>} />        
                         <div>{this.state.NumCartItems}</div>
@@ -51,7 +51,12 @@ class Nav extends Component {
                 />
                 <Drawer docked={false} open={this.state.open} onRequestChange={this.toggleDrawer}>
                     <MenuItem onClick={() => this.redirect('/')}>Product List</MenuItem>
-                    {isAuthenticated()?<MenuItem onClick={() => this.redirect('/cart')}>Cart</MenuItem>:null}                    
+                    {isAuthenticated()?
+                    [
+                    <MenuItem key={'cart'} onClick={() => this.redirect('/cart')}>Cart</MenuItem>,
+                    <MenuItem key={'logout'} onClick={() => logout()}>Logout</MenuItem>
+                    ]
+                    :null}                    
                 </Drawer>
                 </div>
                 

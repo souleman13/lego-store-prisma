@@ -12,7 +12,7 @@ class ProductForm extends Component {
             name: '',
             imgURL: '',
             desc: '',
-            price: 0
+            price: 0.01
         }
     }
 
@@ -38,7 +38,7 @@ class ProductForm extends Component {
                 <a target='_blank' rel="noopener noreferrer" href="https://github.com/souleman13/lego-store-react-redux/blob/master/src/figures.js">Json of Products</a>
                 <TextField required floatingLabelText={`Name`} onChange={e => this.setState({ name: e.target.value })} />
                 <TextField required floatingLabelText={`Image URL`} onChange={e => this.setState({ imgURL: e.target.value })} />
-                <TextField required floatingLabelText={`Description`} onChange={e => this.setState({ desc: e.target.value })} />
+                <TextField required multiLine={true} floatingLabelText={`Description`} onChange={e => this.setState({ desc: e.target.value })} />
                 <TextField required floatingLabelText={`Price`} onChange={e => this.setState({ price: e.target.value })} />
                 <RaisedButton label='Submit' type='submit' />
             </form>

@@ -12,31 +12,47 @@ class Cart extends Component {
             cart: {},
             subtotal: 0,
             tax: 0,
-            total: 0
+            total: 0,
+            products: []
         }
     }
-    async componenetWillReveiveProps(nextProps){
-        if(!nextProps.data.loading && nextProps.data.user.cart.products.length > 0){
-            console.log(nextProps)
-            const subtotal = await nextProps.data.user.cart.products.reduce(product => product.price)
+    async componentWillReceiveProps(nextProps){
+        //check loading and data
+        if(!nextProps.data.loading && nextProps.data.user.cart.products){
+            //combine like id's in products obj then convert to array
+            let products = {}
+            nextProps.data.user.cart.products.map(p =>(products[p.product.id] ?
+                products[p.product.id].quantity++
+                :
+                products[p.product.id] = { ...p.product, quantity:1 }
+            ))
+            products = Object.values(products)
+            //calculate totals
+            const subtotal = await nextProps.data.user.cart.products.reduce((sub, p) => sub + p.product.price )
+            // console.log(subtotal)
             const tax = await subtotal*.08
-            const total =  await tax + subtotal
-            this.setState = {
+            const total = await tax + subtotal
+            //set state once with totals and products
+            await this.setState({
                 subtotal,
                 tax,
-                total
-            }
+                total,
+                products
+            })
         }
     }
     render(){
         const {subtotal,tax,total} = this.state
         const {user, loading} = this.props.data
-        return(!loading && user ?
+        console.log(this.state.products)
+        return(loading && !user ? <div>loading...</div> :
         <div>
-            {user.cart.products === 0? <div>no products in cart!</div>:
+            {user.cart.products === 0 ? <div>no products in cart!</div>:
             <div>
             <section>
-                {user.cart.products.map(product => <Product cartView={true} product={product} key={product.id} />)}
+                {this.state.products.map(p => {
+                    return <Product cartView={true} product={p} key={p.id} />
+                    })}
             </section>
             <section>
                 <div>subtotal:{subtotal}</div>
@@ -46,7 +62,6 @@ class Cart extends Component {
             </div>
             }    
         </div>
-            :<div>loading...</div>
         )
     }
 }
@@ -56,14 +71,13 @@ const USER_CART_QUERY = gql`
             cart{
                 products{
                     id
-                    name
-                    imgURL
-                    desc
-                    price
-                }
-            }
-        }
-    }
-`
+                    product{
+                        id
+                        name
+                        imgURL
+                        price
+                        desc
+                    }
+                }}}}`
 
 export default graphql(USER_CART_QUERY,{options:(props) => ({variables:{id: user_id}})})(Cart)

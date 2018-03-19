@@ -43,7 +43,7 @@ export const logout = () => {
             apollo.resetStore()
             Storage.reset()
             alert('logged out')
-            // window.location.replace('/')
+            window.location.replace('/')
         })
         .catch(err => console.error('Logout failed', err))
 }
