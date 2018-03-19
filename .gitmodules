@@ -1,0 +1,2 @@
+[submodule "server"]
+	url = https://github.com/souleman13/lego-store-prisma-server.git
