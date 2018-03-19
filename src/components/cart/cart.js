@@ -19,17 +19,23 @@ class Cart extends Component {
     async componentWillReceiveProps(nextProps){
         //check loading and data
         if(!nextProps.data.loading && nextProps.data.user.cart.products){
-            //combine like id's in products obj then convert to array
+            //combine like id's in products obj
             let products = {}
             nextProps.data.user.cart.products.map(p =>(products[p.product.id] ?
                 products[p.product.id].quantity++
                 :
                 products[p.product.id] = { ...p.product, quantity:1 }
             ))
+            //convert obj to array
             products = Object.values(products)
+
             //calculate totals
-            const subtotal = await nextProps.data.user.cart.products.reduce((sub, p) => sub + p.product.price )
-            // console.log(subtotal)
+            const subtotal = await nextProps.data.user.cart.products.reduce((subtotal=0, p) => {
+                console.log('price',p.product.price)
+                console.log('subtotal',subtotal)
+                return subtotal + p.product.price
+            } )
+            console.log(subtotal)
             const tax = await subtotal*.08
             const total = await tax + subtotal
             //set state once with totals and products
@@ -44,7 +50,6 @@ class Cart extends Component {
     render(){
         const {subtotal,tax,total} = this.state
         const {user, loading} = this.props.data
-        console.log(this.state.products)
         return(loading && !user ? <div>loading...</div> :
         <div>
             {user.cart.products === 0 ? <div>no products in cart!</div>:

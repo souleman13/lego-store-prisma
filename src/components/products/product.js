@@ -13,7 +13,6 @@ class Product extends Component {
     render(){
         //props deconstruction
         const {addToCart, removeFromCart, product} = this.props
-        console.log(product)
 
         //cart functions
         const AddToCart = async () => {
