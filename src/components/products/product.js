@@ -58,8 +58,10 @@ mutation($user_id:ID!, $product_id:ID!){
       cart{
         id
         products{
-          id
-          name
+            product{
+                id
+                name
+            }
         }
       }
     }
@@ -74,8 +76,10 @@ mutation($user_id:ID!, $product_id:ID!){
       cart{
         id
         products{
-          id
-          name
+            product{
+                id
+                name
+            }
         }
       }
     }

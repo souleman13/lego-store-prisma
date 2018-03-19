@@ -30,12 +30,9 @@ class Cart extends Component {
             products = Object.values(products)
 
             //calculate totals
-            const subtotal = await nextProps.data.user.cart.products.reduce((subtotal=0, p) => {
-                console.log('price',p.product.price)
-                console.log('subtotal',subtotal)
-                return subtotal + p.product.price
-            } )
-            console.log(subtotal)
+
+            let subtotal = 0
+            await products.map(p => subtotal = subtotal + (p.price*p.quantity))
             const tax = await subtotal*.08
             const total = await tax + subtotal
             //set state once with totals and products
