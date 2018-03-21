@@ -20,7 +20,7 @@ class Product extends Component {
             alert('product added to cart')
         }
         const RemoveFromCart = async () => {
-            await removeFromCart({variables:{product_id:product.id}}).then(r => console.log(r))
+            await removeFromCart({variables:{cart_product_id:product.CartProduct_id}}).then(r => console.log(r))
             alert('product removed from cart')
         }
         return(
@@ -68,10 +68,10 @@ mutation($user_id:ID!, $product_id:ID!){
   }
 `
 const REMOVE_FROM_CART = gql`
-mutation($user_id:ID!, $product_id:ID!){
+mutation($user_id:ID!, $cart_product_id:ID!){
     removeProductFromCart(
       user_id: $user_id
-      product_id: $product_id
+      cart_product_id: $cart_product_id
     ){
       cart{
         id

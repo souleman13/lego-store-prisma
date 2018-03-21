@@ -24,7 +24,7 @@ class Cart extends Component {
             nextProps.data.user.cart.products.map(p =>(products[p.product.id] ?
                 products[p.product.id].quantity++
                 :
-                products[p.product.id] = { ...p.product, quantity:1 }
+                products[p.product.id] = { ...p.product, CartProduct_id: p.id, quantity:1 }
             ))
             //convert obj to array
             products = Object.values(products)
